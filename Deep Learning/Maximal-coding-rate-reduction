@@ -1,0 +1,66 @@
+# Learning Diverse and Discriminative Representations via the Principle of Maximal Coding Rate Reduction
+
+- **Authors**: Yaodong Yu, Kwan Ho Ryan Chan, Chong You, Chaobing Song, Yi Ma
+- **Year / Venue**: 2020, arXiv
+- **Link**: arXiv:2006.08558
+- **Tags**: representation learning, interpretability, information theory, MCR², subspace learning, contrastive learning
+- **Status**: Read
+
+## 1. One-line Summary
+- Proposes **Maximal Coding Rate Reduction (MCR²)**, an information-theoretic objective that learns representations by expanding the overall feature space while compressing features within each class.
+
+## 2. Research Question
+- How can we learn representations that are both **discriminative between classes** and **diverse within each class**?
+- Existing objectives such as cross-entropy mainly optimize prediction and do not explicitly guarantee meaningful intermediate representation geometry.
+
+## 3. Core Idea
+- Represent each class as a low-dimensional subspace.
+- Different class subspaces should be maximally separated / uncorrelated.
+- Maximize
+
+\[
+\Delta R = R(Z) - R_c(Z|\Pi)
+\]
+
+where \(R(Z)\) measures the coding rate of all features and \(R_c\) measures the coding rate within classes.
+
+## 4. Method
+- **Models / Data**: ResNet-18; CIFAR-10, CIFAR-100, STL-10
+- **Representation extracted from**: Final learned feature representation before classification
+- **Metrics**: Coding rate \(R\), class coding rate \(R_c\), rate reduction \(\Delta R\), classification accuracy, NMI, ARI
+- **Experimental setup**: Optimize MCR² directly in supervised and self-supervised settings; evaluate learned subspace structure using nearest-subspace classification or clustering.
+
+## 5. Key Results
+- MCR² produces class representations that form approximately independent, high-dimensional subspaces.
+- It is substantially more robust to corrupted labels than standard cross-entropy.
+- The same principle can also learn useful representations in self-supervised clustering settings.
+
+## 6. My Interpretation
+- The objective directly controls the **geometry of the representation space**, instead of only optimizing output predictions.
+- The key takeaway is the expansion–compression view:
+
+  **global representation expands, while each class representation compresses.**
+
+- This provides a measurable way to study how structured representations emerge inside neural networks.
+
+## 7. Limitations / Open Questions
+- Experiments mainly focus on relatively simple vision datasets and subspace-like representations.
+- Optimization in unsupervised / self-supervised settings can reach poor local optima and requires controlled training dynamics.
+- It remains unclear why MCR² is especially robust to label noise.
+
+## 8. Connection to My Research
+- **Why is this relevant?**  
+  MCR² gives a quantitative metric for measuring how representation geometry changes across neural network layers.
+
+- **Possible experiment:**  
+  Extract hidden states from each layer of an LLM and compute coding rate reduction across layers.
+
+- **Possible research question:**  
+  At which layers do representations become compressed, separated, or reorganized for different semantic categories or agent states?
+
+## 9. Reproduction Notes
+- [ ] Load model
+- [ ] Extract hidden states
+- [ ] Reproduce coding-rate calculation
+- [ ] Measure \(R\), \(R_c\), and \(\Delta R\) across layers
+- [ ] Try the metric on LLM or multi-agent representations
